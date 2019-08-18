@@ -11,56 +11,73 @@ public class TicTacToe {
 		Scanner scan = new Scanner(System.in);
 		System.out.println("X or O:");
 		y = scan.next().charAt(0);
+		scan.close();
 		char pos = 'x';																					//not entirely sure if creating of these characters were necessary
 		char pas = 'X';
 		char los = 'o';
 		char las = 'O';
-		int dec=0;
-		if(y==pos||y==pas) {																			//converted the x and o to 1 and 0 so that it is easier to code the array logic
-			dec = 1;																					//dec = 1 means X		
+		char dec=' ';
+		if(y==pos||y==pas) {																			
+			dec = 'X';																					
 		}
 		else if(y==los||y==las) {
-			dec = 2;																					//dec = 2 means O	
+			dec = 'Y';																						
 		}
 		else {
 			System.out.println("Error: Enter either X or O.");													//incase an invalid character is entered, it will loop back to the input function
 			xoro();	
 		}
-		boardloc(dec);
+		boardloc(dec);																							//this is the map of the tictactoe table
 	}
 	
-	public static void boardloc(int x) {
-		int loc,i=0,j=0,cnt=1,dec;
-		dec=x;
-		for(i=0;i<5;i++) {																				//5 rows table			
-			if(i==1||i==3) {																			//for the horizontal lines
-				System.out.println("-----");
-				continue;
-			}
-			for(j=0;j<3;j++) {
-				if(j!=2) {																				//the leftmost and the center character in table	
-					System.out.print(cnt+"|");
-				}
-				else
-				{
-					System.out.print(cnt+"\n");															//the third element in a table			
-				}
-				cnt++;
-			}
-		}
+	public static void boardloc(char pip) {
+		System.out.println("1 | 2 | 3");
+		System.out.println("----------");
+		System.out.println("4 | 5 | 6");
+		System.out.println("----------");
+		System.out.println("7 | 8 | 9");
+		
+		plrturn(pip);																							//this is to switch the players from comp to ai
+	}
+	
+	
+	public static void locfig(char y) {
+		int loc=0;
+		System.out.println("Enter the location");
 		Scanner scan = new Scanner(System.in);
-		System.out.println("Enter the location:");
 		loc = scan.nextInt();
-		locfig(loc,dec);
+		if(loc>=10||loc<0) {
+			System.out.println("Invalid location\n");
+			boardloc(y);
+		}
 		scan.close();
+		loc(loc,y);
 	}
 	
+	public static void complog(char x) {
+		Random ai = new Random();
+		int comp = ai.nextInt(10);
+		loc(comp,x);
+	}
 	
-	public static void locfig(int y, int j) {
-		int[][] board;
-		int dec = j;
-		int x=y;
-		board = new int[3][3];
+	public static void plrturn(char x) {
+		int i=0;
+		while(i<9) {																							//not sure if using while loop is a good idea.
+			if(i%2==0) {
+				locfig(x);																						//entering location input from user
+			}
+			else {
+				complog(x);																						//computer location
+			}
+			i++;
+		}
+	}
+	
+	public static void loc(int loc, char y){
+		char[][] board;
+		int x = loc;
+		char dec = y;
+		board = new char[3][3];
 		if(x<4) {
 			board[0][x-1]=dec;
 		}
@@ -70,61 +87,18 @@ public class TicTacToe {
 		else if(x>6&&x<10){
 			board[2][x-7]=dec;
 		}
-		else {
-			System.out.println("Invalid Location\n");
-			return;
-		}
+		System.out.printf("Entering %c at location %d \n",y,loc);
 		dboard(board);
 	}
 	
-	public static void dboard(int[][] brd){																//have to make a way to traverse both j and k at the same time yet hit all of the 9 numbers.
-		int i=0,j=0,k=0;
-	/*	System.out.print("\033[H\033[2J");  
-	    System.out.flush();*/
-		for(i=0;i<5;i++) {
-			if(i==1||i==3) {
-				System.out.println("-----");
-				continue;
-			}
-			else {
-				for(k=0;k<brd.length;k++) {
-				for(j=0;j<brd[k].length;j++) {
-					if(j!=2) {
-						if(brd[k][j]==1) {																
-							System.out.print("X"+"|");
-							
-						}
-						else if(brd[k][j]==2){
-							System.out.print("O"+"|");				
-							//had to use a lot of loops for making the output table		
-						}
-						else {
-							System.out.print(" "+"|");
-							
-						}
-					}
-					else
-					{
-						if(brd[k][j]==1) {
-							System.out.print("X"+"\n");
-							
-						}
-						else if(brd[k][j]==2){
-							System.out.print("O"+"\n");
-							
-						}
-						else {
-							System.out.print(" "+"\n");
-							
-						}
-					}
-				}	
-				}
-			}	
-		}
+	public static void dboard(char[][] brd){																//have to make a way to traverse both j and k at the same time yet hit all of the 9 numbers.
+		System.out.printf("%c | %c | %c \n", brd[0][0],brd[0][1],brd[0][2]);
+		System.out.println("----------");
+		System.out.printf("%c | %c | %c \n", brd[1][0],brd[1][1],brd[1][2]);
+		System.out.println("----------");
+		System.out.printf("%c | %c | %c \n", brd[2][0],brd[2][1],brd[2][2]);
 	}
 	
-/*	public static void line(int[][] brd) {
-		if(brd[])
-	}*/
+
+	
 }
